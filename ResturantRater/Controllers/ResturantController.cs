@@ -36,5 +36,31 @@ namespace ResturantRater.Controllers
             }
             return View(resturant);
         }
+
+        //GET: Resturant/Delete/{id}
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(System.Net.HttpStatusCode.BadRequest);
+            }
+            Resturant resturant = _db.Resturants.Find(id);
+            if (resturant == null)
+            {
+                return HttpNotFound();
+            }
+            return View(resturant);
+        }
+
+        //POST: Resturant/Delete/{id}
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult Delete(int id)
+        {
+            Resturant resturant = _db.Resturants.Find(id);
+            _db.Resturants.Remove(resturant);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
+        }
     }
 }
